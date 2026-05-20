@@ -1,0 +1,18 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Campus market placeholder</title>
+  <desc>Stylized academic building with columns and a triangular pediment.</desc>
+  <rect width="400" height="400" fill="#0B2545"/>
+  <circle cx="100" cy="80" r="30" fill="#B8F2E6" opacity="0.6"/>
+  <polygon points="80,180 320,180 200,90" fill="#B8F2E6"/>
+  <rect x="70" y="180" width="260" height="20" fill="#13A89E"/>
+  <rect x="60" y="200" width="280" height="120" fill="#B8F2E6"/>
+  <rect x="80" y="210" width="20" height="100" fill="#0B2545"/>
+  <rect x="125" y="210" width="20" height="100" fill="#0B2545"/>
+  <rect x="170" y="210" width="20" height="100" fill="#0B2545"/>
+  <rect x="215" y="210" width="20" height="100" fill="#0B2545"/>
+  <rect x="260" y="210" width="20" height="100" fill="#0B2545"/>
+  <rect x="305" y="210" width="20" height="100" fill="#0B2545"/>
+  <rect x="50" y="320" width="300" height="20" fill="#13A89E"/>
+  <rect x="40" y="340" width="320" height="40" fill="#0B8A82"/>
+  <rect x="180" y="270" width="40" height="50" fill="#EF8354"/>
+</svg>

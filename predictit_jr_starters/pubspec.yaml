@@ -1,0 +1,42 @@
+name: predictit_jr
+description: A teaching app for Object-Oriented Mobile Application Development.
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10    # SVG support for market images (used from A1)
+
+  # Added in A3 (Navigation)
+  # go_router: ^14.0.0
+
+  # Added in A4 (Provider)
+  # provider: ^6.1.0
+
+  # Added in A6 (Persistence)
+  # shared_preferences: ^2.3.0
+
+  # Added in A8 (Camera & GPS)
+  # image_picker: ^1.1.0
+  # geolocator: ^13.0.0
+  # permission_handler: ^11.3.0
+
+  # Optional, for A3 price-history chart
+  # fl_chart: ^0.69.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/data/
+    - assets/images/

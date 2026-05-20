@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "username": "alice",
+      "password": "wonderland",
+      "displayName": "Alice Liddell",
+      "startingBalanceCents": 100000
+    },
+    {
+      "username": "bob",
+      "password": "builder",
+      "displayName": "Bob Robertson",
+      "startingBalanceCents": 100000
+    },
+    {
+      "username": "demo",
+      "password": "demo",
+      "displayName": "Demo User",
+      "startingBalanceCents": 100000
+    }
+  ]
+}

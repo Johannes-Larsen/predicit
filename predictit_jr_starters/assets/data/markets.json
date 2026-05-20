@@ -1,0 +1,112 @@
+{
+  "markets": [
+    {
+      "id": "mkt_001",
+      "title": "Will it rain in Walla Walla this Friday?",
+      "description": "Resolves YES if the official NWS station records >0.01 inches of precipitation between 00:00 and 23:59 local time on the upcoming Friday.",
+      "category": "weather",
+      "yesPriceCents": 42,
+      "volumeShares": 1247,
+      "closesAt": "2026-05-22T23:59:00Z",
+      "imageAsset": "assets/images/rain.svg",
+      "priceHistory": [
+        {"t": "2026-05-08", "yes": 35},
+        {"t": "2026-05-09", "yes": 38},
+        {"t": "2026-05-10", "yes": 41},
+        {"t": "2026-05-11", "yes": 39},
+        {"t": "2026-05-12", "yes": 40},
+        {"t": "2026-05-13", "yes": 42},
+        {"t": "2026-05-14", "yes": 42}
+      ],
+      "latitude": 46.0646,
+      "longitude": -118.3430
+    },
+    {
+      "id": "mkt_002",
+      "title": "Will the WWU intramural soccer final go to penalties?",
+      "description": "Resolves YES if the championship match is decided by a penalty shootout.",
+      "category": "sports",
+      "yesPriceCents": 18,
+      "volumeShares": 432,
+      "closesAt": "2026-06-01T18:00:00Z",
+      "imageAsset": "assets/images/soccer.svg",
+      "priceHistory": [
+        {"t": "2026-05-10", "yes": 22},
+        {"t": "2026-05-11", "yes": 20},
+        {"t": "2026-05-12", "yes": 19},
+        {"t": "2026-05-13", "yes": 18},
+        {"t": "2026-05-14", "yes": 18}
+      ],
+      "latitude": 46.0420,
+      "longitude": -118.3879
+    },
+    {
+      "id": "mkt_003",
+      "title": "Will the next Flutter stable release ship before June 30?",
+      "description": "Resolves YES if a new stable channel release is announced on flutter.dev before 2026-06-30 23:59 UTC.",
+      "category": "tech",
+      "yesPriceCents": 71,
+      "volumeShares": 2891,
+      "closesAt": "2026-06-30T23:59:00Z",
+      "imageAsset": "assets/images/flutter.svg",
+      "priceHistory": [
+        {"t": "2026-05-01", "yes": 55},
+        {"t": "2026-05-05", "yes": 60},
+        {"t": "2026-05-10", "yes": 68},
+        {"t": "2026-05-14", "yes": 71}
+      ],
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "id": "mkt_004",
+      "title": "Will Whitman Mission visitor count exceed 5,000 in May?",
+      "description": "Resolves YES if the NPS-reported visitor count for May 2026 exceeds 5,000.",
+      "category": "local",
+      "yesPriceCents": 56,
+      "volumeShares": 198,
+      "closesAt": "2026-06-05T12:00:00Z",
+      "imageAsset": "assets/images/whitman.svg",
+      "priceHistory": [
+        {"t": "2026-05-01", "yes": 50},
+        {"t": "2026-05-08", "yes": 53},
+        {"t": "2026-05-14", "yes": 56}
+      ],
+      "latitude": 46.0418,
+      "longitude": -118.4630
+    },
+    {
+      "id": "mkt_005",
+      "title": "Will the average high temp in Walla Walla exceed 80°F next week?",
+      "description": "Resolves YES if the average of the seven daily highs (Mon–Sun) at KALW exceeds 80°F.",
+      "category": "weather",
+      "yesPriceCents": 63,
+      "volumeShares": 877,
+      "closesAt": "2026-05-25T07:00:00Z",
+      "imageAsset": "assets/images/sun.svg",
+      "priceHistory": [
+        {"t": "2026-05-10", "yes": 58},
+        {"t": "2026-05-12", "yes": 61},
+        {"t": "2026-05-14", "yes": 63}
+      ],
+      "latitude": 46.0646,
+      "longitude": -118.3430
+    },
+    {
+      "id": "mkt_006",
+      "title": "Will the CS department announce a new faculty hire this quarter?",
+      "description": "Resolves YES if a new tenure-track CS faculty announcement appears on the WWU CS page before quarter end.",
+      "category": "campus",
+      "yesPriceCents": 29,
+      "volumeShares": 156,
+      "closesAt": "2026-06-15T23:59:00Z",
+      "imageAsset": "assets/images/campus.svg",
+      "priceHistory": [
+        {"t": "2026-05-01", "yes": 25},
+        {"t": "2026-05-14", "yes": 29}
+      ],
+      "latitude": 46.0420,
+      "longitude": -118.3879
+    }
+  ]
+}

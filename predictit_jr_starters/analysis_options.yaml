@@ -1,0 +1,31 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    # Promote a few warnings to errors for teaching purposes
+    missing_return: error
+    unused_import: error
+    unused_local_variable: warning
+
+linter:
+  rules:
+    # Type discipline — important coming from Python
+    always_declare_return_types: true
+    always_specify_types: false  # too aggressive; type inference is fine
+    avoid_dynamic_calls_without_null_check: true
+    prefer_final_locals: true
+    prefer_final_fields: true
+
+    # Style consistency
+    prefer_single_quotes: true
+    sort_pub_dependencies: false
+    require_trailing_commas: true
+
+    # Flutter-specific
+    use_key_in_widget_constructors: true
+    sized_box_for_whitespace: true
+    avoid_unnecessary_containers: true
