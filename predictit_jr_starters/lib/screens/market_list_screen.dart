@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/market_repository.dart';
 import '../models/market.dart';
+import '../widgets/bet_sheet.dart';
 import '../widgets/market_card.dart';
 
 class MarketListScreen extends StatefulWidget {
@@ -58,7 +59,19 @@ class _MarketListScreenState extends State<MarketListScreen> {
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: markets.length,
               itemBuilder: (BuildContext context, int index) {
-                return MarketCard(market: markets[index]);
+                final Market market = markets[index];
+                return MarketCard(
+                  market: market,
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return BetSheet(market: market);
+                      },
+                    );
+                  },
+                );
               },
             ),
           );
