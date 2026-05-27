@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bet.dart';
 import '../models/market.dart';
+import '../providers/portfolio_model.dart';
 import '../utils/formatters.dart';
 
 class BetSheet extends StatefulWidget {
@@ -52,9 +54,16 @@ class _BetSheetState extends State<BetSheet> {
       placedAt: DateTime.now(),
     );
 
-    print('Placed bet: ${bet.toJson()}');
-
+    final bool accepted = context.read<PortfolioModel>().placeBet(bet);
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+
+    if (!accepted) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Not enough cash')),
+      );
+      return;
+    }
+
     final String message =
         'Bet placed: $_shares $_selectedSideLabel @ ${Formatters.price(_selectedPriceCents)}';
 

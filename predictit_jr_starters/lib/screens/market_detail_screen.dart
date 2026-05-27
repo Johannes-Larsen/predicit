@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../data/market_repository.dart';
 import '../models/market.dart';
@@ -29,7 +30,16 @@ class _MarketDetailScreenState extends State<MarketDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Market')),
+      appBar: AppBar(
+        title: const Text('Market'),
+        actions: <Widget>[
+          IconButton(
+            tooltip: 'Portfolio',
+            onPressed: () => context.push('/portfolio'),
+            icon: const Icon(Icons.account_balance_wallet_outlined),
+          ),
+        ],
+      ),
       body: FutureBuilder<Market?>(
         future: _marketFuture,
         builder: (BuildContext context, AsyncSnapshot<Market?> snapshot) {

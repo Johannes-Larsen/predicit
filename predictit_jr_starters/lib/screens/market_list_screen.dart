@@ -31,7 +31,16 @@ class _MarketListScreenState extends State<MarketListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Markets')),
+      appBar: AppBar(
+        title: const Text('Markets'),
+        actions: <Widget>[
+          IconButton(
+            tooltip: 'Portfolio',
+            onPressed: () => context.push('/portfolio'),
+            icon: const Icon(Icons.account_balance_wallet_outlined),
+          ),
+        ],
+      ),
       body: FutureBuilder<List<Market>>(
         future: _marketsFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Market>> snapshot) {
