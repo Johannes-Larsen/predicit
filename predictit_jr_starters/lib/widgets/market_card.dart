@@ -10,8 +10,8 @@ class MarketCard extends StatelessWidget {
   final Market market;
   final VoidCallback? onTap;
 
-  // MarketCard receives an onTap callback instead of opening the sheet itself
-  // so the reusable card stays focused on display while the screen controls navigation.
+  // MarketCard receives an onTap callback so the reusable card handles display
+  // while the screen decides whether tapping should navigate or do something else.
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -39,11 +39,17 @@ class MarketCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text(
-                      market.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.titleMedium,
+                    Hero(
+                      tag: 'market-title-${market.id}',
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          market.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.titleMedium,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(

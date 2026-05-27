@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/market_list_screen.dart';
+
+import 'router.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -11,10 +12,10 @@ class PredictItApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'PredictIt Jr.',
       theme: AppTheme.light,
-      home: const MarketListScreen(),
+      routerConfig: router,
     );
   }
 }

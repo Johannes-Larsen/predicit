@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../data/market_repository.dart';
 import '../models/market.dart';
-import '../widgets/bet_sheet.dart';
 import '../widgets/market_card.dart';
 
 class MarketListScreen extends StatefulWidget {
@@ -62,15 +62,7 @@ class _MarketListScreenState extends State<MarketListScreen> {
                 final Market market = markets[index];
                 return MarketCard(
                   market: market,
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return BetSheet(market: market);
-                      },
-                    );
-                  },
+                  onTap: () => context.push('/market/${market.id}'),
                 );
               },
             ),

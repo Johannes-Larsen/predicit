@@ -14,7 +14,7 @@ dependencies:
   flutter_svg: ^2.0.10    # SVG support for market images (used from A1)
 
   # Added in A3 (Navigation)
-  # go_router: ^14.0.0
+  go_router: ^14.0.0
 
   # Added in A4 (Provider)
   # provider: ^6.1.0
