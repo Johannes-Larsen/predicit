@@ -5,10 +5,16 @@ import '../models/market.dart';
 import '../utils/formatters.dart';
 
 class MarketCard extends StatelessWidget {
-  const MarketCard({super.key, required this.market, this.onTap});
+  const MarketCard({
+    super.key,
+    required this.market,
+    this.onTap,
+    this.enableHero = true,
+  });
 
   final Market market;
   final VoidCallback? onTap;
+  final bool enableHero;
 
   // MarketCard receives an onTap callback so the reusable card handles display
   // while the screen decides whether tapping should navigate or do something else.
@@ -39,17 +45,10 @@ class MarketCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Hero(
-                      tag: 'market-title-${market.id}',
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          market.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.titleMedium,
-                        ),
-                      ),
+                    _MarketTitle(
+                      market: market,
+                      style: textTheme.titleMedium,
+                      enableHero: enableHero,
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -78,6 +77,39 @@ class MarketCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+
+class _MarketTitle extends StatelessWidget {
+  const _MarketTitle({
+    required this.market,
+    required this.style,
+    required this.enableHero,
+  });
+
+  final Market market;
+  final TextStyle? style;
+  final bool enableHero;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget title = Text(
+      market.title,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: style,
+    );
+
+    if (!enableHero) return title;
+
+    return Hero(
+      tag: 'market-title-${market.id}',
+      child: Material(
+        color: Colors.transparent,
+        child: title,
       ),
     );
   }

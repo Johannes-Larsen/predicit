@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../data/market_repository.dart';
 import '../models/market.dart';
+import '../widgets/adaptive_shell.dart';
 import '../widgets/market_card.dart';
+import 'market_detail_screen.dart';
 
 class MarketListScreen extends StatefulWidget {
   const MarketListScreen({super.key});
@@ -14,6 +16,7 @@ class MarketListScreen extends StatefulWidget {
 
 class _MarketListScreenState extends State<MarketListScreen> {
   late Future<List<Market>> _marketsFuture;
+  Market? _selectedMarket;
 
   @override
   void initState() {
@@ -30,17 +33,10 @@ class _MarketListScreenState extends State<MarketListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool wide = MediaQuery.sizeOf(context).width >= kWideBreakpoint;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Markets'),
-        actions: <Widget>[
-          IconButton(
-            tooltip: 'Portfolio',
-            onPressed: () => context.push('/portfolio'),
-            icon: const Icon(Icons.account_balance_wallet_outlined),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Markets')),
       body: FutureBuilder<List<Market>>(
         future: _marketsFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Market>> snapshot) {
@@ -61,22 +57,140 @@ class _MarketListScreenState extends State<MarketListScreen> {
           }
 
           final List<Market> markets = snapshot.data ?? <Market>[];
+          if (!wide) {
+            return _NarrowMarketList(
+              markets: markets,
+              onRefresh: _refreshMarkets,
+            );
+          }
 
-          return RefreshIndicator(
+          return _WideMarketSplit(
+            markets: markets,
+            selectedMarket: _selectedMarket,
+            onSelected: (Market market) {
+              setState(() {
+                _selectedMarket = market;
+              });
+            },
             onRefresh: _refreshMarkets,
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: markets.length,
-              itemBuilder: (BuildContext context, int index) {
-                final Market market = markets[index];
-                return MarketCard(
-                  market: market,
-                  onTap: () => context.push('/market/${market.id}'),
-                );
-              },
-            ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _NarrowMarketList extends StatelessWidget {
+  const _NarrowMarketList({required this.markets, required this.onRefresh});
+
+  final List<Market> markets;
+  final RefreshCallback onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        itemCount: markets.length,
+        itemBuilder: (BuildContext context, int index) {
+          final Market market = markets[index];
+          return MarketCard(
+            market: market,
+            onTap: () => context.push('/market/${market.id}'),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _WideMarketSplit extends StatelessWidget {
+  const _WideMarketSplit({
+    required this.markets,
+    required this.selectedMarket,
+    required this.onSelected,
+    required this.onRefresh,
+  });
+
+  final List<Market> markets;
+  final Market? selectedMarket;
+  final ValueChanged<Market> onSelected;
+  final RefreshCallback onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double listWidth = (constraints.maxWidth * 0.42)
+            .clamp(320.0, 420.0)
+            .toDouble();
+
+        return Row(
+          children: <Widget>[
+            SizedBox(
+              width: listWidth,
+              child: RefreshIndicator(
+                onRefresh: onRefresh,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: markets.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final Market market = markets[index];
+                    return MarketCard(
+                      market: market,
+                      enableHero: false,
+                      onTap: () => onSelected(market),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const VerticalDivider(width: 1),
+            Expanded(
+              child: selectedMarket == null
+                  ? const _SelectMarketEmptyState()
+                  : MarketDetailBody(
+                      market: selectedMarket!,
+                      enableHero: false,
+                    ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _SelectMarketEmptyState extends StatelessWidget {
+  const _SelectMarketEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              Icons.touch_app_outlined,
+              size: 56,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Select a market',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Choose a market from the list to view its full details here.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
       ),
     );
   }

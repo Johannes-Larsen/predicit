@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import '../data/market_repository.dart';
 import '../models/market.dart';
@@ -30,16 +29,7 @@ class _MarketDetailScreenState extends State<MarketDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Market'),
-        actions: <Widget>[
-          IconButton(
-            tooltip: 'Portfolio',
-            onPressed: () => context.push('/portfolio'),
-            icon: const Icon(Icons.account_balance_wallet_outlined),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Market')),
       body: FutureBuilder<Market?>(
         future: _marketFuture,
         builder: (BuildContext context, AsyncSnapshot<Market?> snapshot) {
@@ -72,17 +62,22 @@ class _MarketDetailScreenState extends State<MarketDetailScreen> {
             );
           }
 
-          return _DetailBody(market: market);
+          return MarketDetailBody(market: market);
         },
       ),
     );
   }
 }
 
-class _DetailBody extends StatelessWidget {
-  const _DetailBody({required this.market});
+class MarketDetailBody extends StatelessWidget {
+  const MarketDetailBody({
+    super.key,
+    required this.market,
+    this.enableHero = true,
+  });
 
   final Market market;
+  final bool enableHero;
 
   @override
   Widget build(BuildContext context) {
@@ -106,15 +101,10 @@ class _DetailBody extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: Hero(
-                  tag: 'market-title-${market.id}',
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Text(
-                      market.title,
-                      style: textTheme.headlineSmall,
-                    ),
-                  ),
+                child: _DetailTitle(
+                  market: market,
+                  style: textTheme.headlineSmall,
+                  enableHero: enableHero,
                 ),
               ),
             ],
@@ -171,6 +161,34 @@ class _DetailBody extends StatelessWidget {
     final String hour = local.hour.toString().padLeft(2, '0');
     final String minute = local.minute.toString().padLeft(2, '0');
     return '${local.year}-$month-$day $hour:$minute';
+  }
+}
+
+
+class _DetailTitle extends StatelessWidget {
+  const _DetailTitle({
+    required this.market,
+    required this.style,
+    required this.enableHero,
+  });
+
+  final Market market;
+  final TextStyle? style;
+  final bool enableHero;
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget title = Text(market.title, style: style);
+
+    if (!enableHero) return title;
+
+    return Hero(
+      tag: 'market-title-${market.id}',
+      child: Material(
+        color: Colors.transparent,
+        child: title,
+      ),
+    );
   }
 }
 

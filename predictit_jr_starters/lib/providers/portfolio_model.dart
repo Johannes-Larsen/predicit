@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/bet.dart';
 
 class PortfolioModel extends ChangeNotifier {
-  int _cashCents = 100;
+  int _cashCents = 100000;
   final List<Bet> _bets = <Bet>[];
 
   int get cashCents => _cashCents;
