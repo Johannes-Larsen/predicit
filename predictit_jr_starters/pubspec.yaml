@@ -20,7 +20,7 @@ dependencies:
   provider: ^6.1.0
 
   # Added in A6 (Persistence)
-  # shared_preferences: ^2.3.0
+  shared_preferences: ^2.3.0
 
   # Added in A8 (Camera & GPS)
   # image_picker: ^1.1.0
