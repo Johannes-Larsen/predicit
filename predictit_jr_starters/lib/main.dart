@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/auth_model.dart';
 import 'providers/portfolio_model.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
@@ -9,27 +10,44 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   final PortfolioModel portfolio = PortfolioModel();
-  // Start the one-time load before building the router so the app shows a
-  // loading state instead of briefly showing default portfolio data.
-  final Future<void> loadFuture = portfolio.load();
+  final AuthModel auth = AuthModel();
+  // Load both persisted models before the real router appears so users do not
+  // see a brief signed-out/default-state flash on launch.
+  final Future<void> loadFuture = Future.wait(<Future<void>>[
+    portfolio.load(),
+    auth.load(),
+  ]);
 
-  runApp(PredictItApp(portfolio: portfolio, loadFuture: loadFuture));
+  runApp(
+    PredictItApp(
+      portfolio: portfolio,
+      auth: auth,
+      loadFuture: loadFuture,
+    ),
+  );
 }
 
 class PredictItApp extends StatelessWidget {
   const PredictItApp({
     super.key,
     required this.portfolio,
+    required this.auth,
     required this.loadFuture,
   });
 
   final PortfolioModel portfolio;
+  final AuthModel auth;
   final Future<void> loadFuture;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<PortfolioModel>.value(
-      value: portfolio,
+    // MultiProvider keeps AuthModel and PortfolioModel independent while making
+    // both available above the router and every route in the app.
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PortfolioModel>.value(value: portfolio),
+        ChangeNotifierProvider<AuthModel>.value(value: auth),
+      ],
       child: FutureBuilder<void>(
         future: loadFuture,
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -52,7 +70,7 @@ class PredictItApp extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(24),
                     child: Text(
-                      'Failed to load saved portfolio: ${snapshot.error}',
+                      'Failed to load saved app state: ${snapshot.error}',
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -64,7 +82,7 @@ class PredictItApp extends StatelessWidget {
           return MaterialApp.router(
             title: 'PredictIt Jr.',
             theme: AppTheme.light,
-            routerConfig: router,
+            routerConfig: buildRouter(auth),
           );
         },
       ),

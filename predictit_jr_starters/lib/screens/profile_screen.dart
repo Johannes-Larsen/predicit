@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/auth_model.dart';
 import '../providers/portfolio_model.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -45,34 +46,55 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _signOut(BuildContext context) async {
+    await context.read<AuthModel>().signOut();
+    // No context.go('/signin') here. The go_router redirect observes
+    // AuthModel through refreshListenable and moves the user automatically.
+  }
+
   @override
   Widget build(BuildContext context) {
+    final AuthModel auth = context.watch<AuthModel>();
+    final String displayName = auth.currentUser?.displayName ?? 'Unknown user';
+    final String username = auth.currentUser?.username ?? 'unknown';
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
       body: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Icon(Icons.person, size: 64),
-              const SizedBox(height: 16),
-              const Text('Signed in as demo user'),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const Icon(Icons.person, size: 64),
+                const SizedBox(height: 16),
+                Text(
+                  displayName,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '@$username',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                FilledButton.icon(
                   onPressed: () => _confirmReset(context),
                   icon: const Icon(Icons.restart_alt),
                   label: const Text('Reset account'),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const FilledButton(
-                onPressed: null,
-                child: Text('Sign out coming in A7'),
-              ),
-            ],
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: () => _signOut(context),
+                  icon: const Icon(Icons.logout),
+                  label: const Text('Sign out'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
