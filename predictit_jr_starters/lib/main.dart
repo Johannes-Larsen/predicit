@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'data/permission_service.dart';
 import 'providers/auth_model.dart';
+import 'providers/location_model.dart';
 import 'providers/portfolio_model.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
@@ -11,6 +13,8 @@ void main() {
 
   final PortfolioModel portfolio = PortfolioModel();
   final AuthModel auth = AuthModel();
+  final PermissionService permissionService = PermissionService();
+  final LocationModel location = LocationModel(permissionService: permissionService);
   // Load both persisted models before the real router appears so users do not
   // see a brief signed-out/default-state flash on launch.
   final Future<void> loadFuture = Future.wait(<Future<void>>[
@@ -22,6 +26,8 @@ void main() {
     PredictItApp(
       portfolio: portfolio,
       auth: auth,
+      permissionService: permissionService,
+      location: location,
       loadFuture: loadFuture,
     ),
   );
@@ -32,11 +38,15 @@ class PredictItApp extends StatelessWidget {
     super.key,
     required this.portfolio,
     required this.auth,
+    required this.permissionService,
+    required this.location,
     required this.loadFuture,
   });
 
   final PortfolioModel portfolio;
   final AuthModel auth;
+  final PermissionService permissionService;
+  final LocationModel location;
   final Future<void> loadFuture;
 
   @override
@@ -47,6 +57,8 @@ class PredictItApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<PortfolioModel>.value(value: portfolio),
         ChangeNotifierProvider<AuthModel>.value(value: auth),
+        Provider<PermissionService>.value(value: permissionService),
+        ChangeNotifierProvider<LocationModel>.value(value: location),
       ],
       child: FutureBuilder<void>(
         future: loadFuture,

@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import 'providers/auth_model.dart';
+import 'screens/create_market_screen.dart';
 import 'screens/market_detail_screen.dart';
 import 'screens/market_list_screen.dart';
 import 'screens/portfolio_screen.dart';
@@ -43,6 +44,10 @@ GoRouter buildRouter(AuthModel auth) {
                 path: '/',
                 builder: (context, state) => const MarketListScreen(),
                 routes: <RouteBase>[
+                  GoRoute(
+                    path: 'create',
+                    builder: (context, state) => const CreateMarketScreen(),
+                  ),
                   GoRoute(
                     path: 'market/:id',
                     builder: (context, state) {

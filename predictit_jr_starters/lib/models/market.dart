@@ -10,6 +10,7 @@ class Market {
     required this.closesAt,
     required this.imageAsset,
     required this.priceHistory,
+    this.photoPath,
     this.latitude,
     this.longitude,
   });
@@ -23,6 +24,8 @@ class Market {
   final DateTime closesAt;
   final String imageAsset;
   final List<PricePoint> priceHistory;
+  /// Local file path for markets created on-device. Bundled markets use SVG assets.
+  final String? photoPath;
   final double? latitude;
   final double? longitude;
 
@@ -30,6 +33,37 @@ class Market {
   int get noPriceCents => 100 - yesPriceCents;
 
   bool get hasLocation => latitude != null && longitude != null;
+
+
+  Market copyWith({
+    String? id,
+    String? title,
+    String? description,
+    String? category,
+    int? yesPriceCents,
+    int? volumeShares,
+    DateTime? closesAt,
+    String? imageAsset,
+    List<PricePoint>? priceHistory,
+    String? photoPath,
+    double? latitude,
+    double? longitude,
+  }) {
+    return Market(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      yesPriceCents: yesPriceCents ?? this.yesPriceCents,
+      volumeShares: volumeShares ?? this.volumeShares,
+      closesAt: closesAt ?? this.closesAt,
+      imageAsset: imageAsset ?? this.imageAsset,
+      priceHistory: priceHistory ?? this.priceHistory,
+      photoPath: photoPath ?? this.photoPath,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+    );
+  }
 
   factory Market.fromJson(Map<String, dynamic> json) {
     return Market(
@@ -44,6 +78,7 @@ class Market {
       priceHistory: (json['priceHistory'] as List<dynamic>)
           .map((dynamic e) => PricePoint.fromJson(e as Map<String, dynamic>))
           .toList(),
+      photoPath: json['photoPath'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
     );

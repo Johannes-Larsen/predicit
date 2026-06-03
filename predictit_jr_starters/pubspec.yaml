@@ -23,9 +23,9 @@ dependencies:
   shared_preferences: ^2.3.0
 
   # Added in A8 (Camera & GPS)
-  # image_picker: ^1.1.0
-  # geolocator: ^13.0.0
-  # permission_handler: ^11.3.0
+  image_picker: ^1.1.0
+  geolocator: ^13.0.0
+  permission_handler: ^11.3.0
 
   # Optional, for A3 price-history chart
   # fl_chart: ^0.69.0

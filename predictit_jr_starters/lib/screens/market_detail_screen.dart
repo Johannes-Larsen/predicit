@@ -1,12 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../data/market_repository.dart';
 import '../models/market.dart';
 import '../utils/formatters.dart';
 import '../widgets/bet_sheet.dart';
+import '../widgets/market_image.dart';
 
 class MarketDetailScreen extends StatefulWidget {
   const MarketDetailScreen({super.key, required this.id});
@@ -94,10 +93,7 @@ class MarketDetailBody extends StatelessWidget {
               SizedBox(
                 width: 72,
                 height: 72,
-                child: SvgPicture.asset(
-                  market.imageAsset,
-                  fit: BoxFit.contain,
-                ),
+                child: MarketImage(market: market),
               ),
               const SizedBox(width: 16),
               Expanded(

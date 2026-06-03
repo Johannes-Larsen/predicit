@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 /// String formatting helpers used across screens.
 ///
 /// Keeping these in one place means UI tweaks (e.g. switching from "42¢" to
@@ -12,7 +14,6 @@ class Formatters {
   static String balance(int cents) {
     final double dollars = cents / 100.0;
     final String fixed = dollars.toStringAsFixed(2);
-    // Insert thousands separators on the integer part.
     final List<String> parts = fixed.split('.');
     final String intPart = parts[0];
     final StringBuffer buf = StringBuffer();
@@ -23,10 +24,27 @@ class Formatters {
     return '\$${buf.toString()}.${parts[1]}';
   }
 
-  /// Formats a distance in meters as "0.3 mi" or "120 m".
-  static String distance(double meters) {
+  /// Great-circle distance between two lat/lng pairs as "120 m" or "0.3 mi".
+  static String distance(
+    double fromLat,
+    double fromLng,
+    double toLat,
+    double toLng,
+  ) {
+    const double earthRadiusMeters = 6371000.0;
+    final double dLat = _toRadians(toLat - fromLat);
+    final double dLng = _toRadians(toLng - fromLng);
+    final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_toRadians(fromLat)) *
+            math.cos(_toRadians(toLat)) *
+            math.sin(dLng / 2) *
+            math.sin(dLng / 2);
+    final double meters =
+        earthRadiusMeters * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+
     if (meters < 1000) return '${meters.round()} m';
-    final double miles = meters / 1609.344;
-    return '${miles.toStringAsFixed(1)} mi';
+    return '${(meters / 1609.344).toStringAsFixed(1)} mi';
   }
+
+  static double _toRadians(double degrees) => degrees * math.pi / 180.0;
 }

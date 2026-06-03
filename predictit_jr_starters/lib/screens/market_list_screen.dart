@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:provider/provider.dart';
+
 import '../data/market_repository.dart';
 import '../models/market.dart';
 import '../widgets/adaptive_shell.dart';
+import '../providers/location_model.dart';
 import '../widgets/market_card.dart';
 import 'market_detail_screen.dart';
 
@@ -17,11 +20,28 @@ class MarketListScreen extends StatefulWidget {
 class _MarketListScreenState extends State<MarketListScreen> {
   late Future<List<Market>> _marketsFuture;
   Market? _selectedMarket;
+  bool _requestedLocation = false;
 
   @override
   void initState() {
     super.initState();
     _marketsFuture = MarketRepository().loadAll();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_requestedLocation) return;
+    _requestedLocation = true;
+
+    // LocationModel notifies listeners, so request it after the first frame.
+    // Calling it directly during build/didChangeDependencies causes Provider's
+    // "markNeedsBuild called during build" exception.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<LocationModel>().refresh();
+    });
   }
 
   Future<void> _refreshMarkets() async {
@@ -37,6 +57,16 @@ class _MarketListScreenState extends State<MarketListScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Markets')),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          final bool? created = await context.push<bool>('/create');
+          if (created == true && mounted) {
+            await _refreshMarkets();
+          }
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Create'),
+      ),
       body: FutureBuilder<List<Market>>(
         future: _marketsFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Market>> snapshot) {

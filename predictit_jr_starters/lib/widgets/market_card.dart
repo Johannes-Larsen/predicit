@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../models/market.dart';
+import '../providers/location_model.dart';
 import '../utils/formatters.dart';
+import 'market_image.dart';
 
 class MarketCard extends StatelessWidget {
   const MarketCard({
@@ -17,7 +19,7 @@ class MarketCard extends StatelessWidget {
   final bool enableHero;
 
   // MarketCard receives an onTap callback so the reusable card handles display
-  // while the screen decides whether tapping should navigate or do something else.
+  // while the screen decides whether tapping navigates or updates a pane.
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -34,10 +36,7 @@ class MarketCard extends StatelessWidget {
               SizedBox(
                 width: 72,
                 height: 72,
-                child: SvgPicture.asset(
-                  market.imageAsset,
-                  fit: BoxFit.contain,
-                ),
+                child: MarketImage(market: market),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -57,6 +56,8 @@ class MarketCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyMedium,
                     ),
+                    const SizedBox(height: 6),
+                    _DistanceChip(market: market),
                   ],
                 ),
               ),
@@ -82,6 +83,35 @@ class MarketCard extends StatelessWidget {
   }
 }
 
+class _DistanceChip extends StatelessWidget {
+  const _DistanceChip({required this.market});
+
+  final Market market;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!market.hasLocation) return const SizedBox.shrink();
+
+    final location = context.watch<LocationModel>().position;
+    if (location == null) return const SizedBox.shrink();
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Chip(
+        visualDensity: VisualDensity.compact,
+        avatar: const Icon(Icons.place_outlined, size: 16),
+        label: Text(
+          Formatters.distance(
+            location.latitude,
+            location.longitude,
+            market.latitude!,
+            market.longitude!,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class _MarketTitle extends StatelessWidget {
   const _MarketTitle({
