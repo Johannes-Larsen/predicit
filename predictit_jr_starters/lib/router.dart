@@ -11,8 +11,9 @@ import 'widgets/adaptive_shell.dart';
 
 // Routes carry string ids, not Market objects, because URLs can be opened
 // directly and cannot store a whole Dart object for deep links or redirects.
-GoRouter buildRouter(AuthModel auth) {
+GoRouter buildRouter(AuthModel auth, {String initialLocation = '/'}) {
   return GoRouter(
+    initialLocation: initialLocation,
     // AuthModel is a ChangeNotifier. When signIn/signOut calls
     // notifyListeners(), the router re-runs redirect automatically.
     refreshListenable: auth,
