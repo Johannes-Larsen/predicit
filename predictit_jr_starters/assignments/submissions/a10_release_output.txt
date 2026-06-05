@@ -1,0 +1,11 @@
+Run locally before submitting:
+
+flutter clean
+flutter pub get
+dart run flutter_launcher_icons
+dart run flutter_native_splash:create
+flutter analyze
+flutter test
+flutter build apk --release
+
+Paste the successful local output here. Flutter is not installed in the ChatGPT sandbox, so this file is a placeholder that must be replaced with your real terminal output before final submission.

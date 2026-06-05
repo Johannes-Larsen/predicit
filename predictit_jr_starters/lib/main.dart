@@ -67,6 +67,8 @@ class PredictItApp extends StatelessWidget {
             return MaterialApp(
               title: 'PredictIt Jr.',
               theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: ThemeMode.system,
               home: const Scaffold(
                 body: Center(child: CircularProgressIndicator()),
               ),
@@ -77,6 +79,8 @@ class PredictItApp extends StatelessWidget {
             return MaterialApp(
               title: 'PredictIt Jr.',
               theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: ThemeMode.system,
               home: Scaffold(
                 body: Center(
                   child: Padding(
@@ -94,6 +98,8 @@ class PredictItApp extends StatelessWidget {
           return MaterialApp.router(
             title: 'PredictIt Jr.',
             theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: ThemeMode.system,
             routerConfig: buildRouter(auth),
           );
         },
